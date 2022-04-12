@@ -29,7 +29,7 @@ You can actually curl this to get a response:
 curl localhost:8080
 {"timestamp":"2022-04-09T23:41:00.043+00:00","status":404,"error":"Not Found","path":"/"}(base)
 ```
-* `mvn package` Install and build project depedencies 
+* `mvn package` Install and build project dependencies 
 * `mvn spring-boot:run` Run with mvn 
 * `mvn dependency:tree` Lists our in tree structure all the dependencies of a maven project
 
