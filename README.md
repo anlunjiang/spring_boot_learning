@@ -75,7 +75,7 @@ Seems to be similar to Alembic - flyway provides a good way to do database migra
 ```
 It will also track your versions via a table `flyway_schema_history`
 
-installed_rank |  | version |  | description |  | type |  | script |  | checksum |  | installed_by |  | installed_on |  | execution_time |  | success | 
----------------|--|---------|--|-------------|--|------|--|--------|--|----------|--|--------------|--|--------------|--|----------------|--|---------|-
--1 | null | << Flyway Schema History table created >> | TABLE |  | null | SA | 2022-04-12 02:37:11.669 | 0 | TRUE
-1 | 1.0.0 | init | SQL | V1.0.0__init.sql | 119191856 | SA | 2022-04-12 02:37:11.699 | 9 | TRUE
+| installed_rank | version | type  | script           | checksum  | installed_by | installed_on              | execution_time | success | 
+|----------------|---------|-------|------------------|-----------|--------------|---------------------------|----------------|---------|
+| -1             | null    | TABLE |                  | null      | SA           | 2022-04-12 02:37:11.669   | 0              | TRUE    |
+| 1              | 1.0.0   | SQL   | V1.0.0__init.sql | 119191856 | SA           | 2022-04-12 02:37:11.699   | 9              | TRUE    |
