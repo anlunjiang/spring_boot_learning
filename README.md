@@ -79,3 +79,67 @@ It will also track your versions via a table `flyway_schema_history`
 |----------------|---------|-------|------------------|-----------|--------------|---------------------------|----------------|---------|
 | -1             | null    | TABLE |                  | null      | SA           | 2022-04-12 02:37:11.669   | 0              | TRUE    |
 | 1              | 1.0.0   | SQL   | V1.0.0__init.sql | 119191856 | SA           | 2022-04-12 02:37:11.699   | 9              | TRUE    |
+
+## Spring Framework
+
+Spring has a multitude of helpers that enable you to develop in an opininated framework
+* Repositories
+  * Repositories are a way to abstract data layers into methods to write and retrieve data
+  * Like with getters and setters, the findByXXX() method must be named after a correct property of the expected return
+  type:
+
+```java
+public interface GithubProjectRepository extends PagingAndSortingRepository<GithubProject, Long> {
+    GithubProject findByRepoName(String repoName);
+}
+
+@Entity
+public class GithubProject implements Serializable {
+  @Id
+  @GeneratedValue
+  private Long id;
+  private String orgName;
+  @Column(unique = true)
+  private String repoName;
+
+  public String getRepoName() {
+    return repoName;
+  }
+}
+```
+In this pseudo-code example - the interface method `findByRepoName` is only valid because the entity GithubProject
+has the appropriate repoName attr - which likely calls the getRepoName method under the hood
+
+* RestTemplates
+  * Is a synchronous client to perform HTTP requests
+* Annotations
+  * Instantiate beans - a lot of the time - we won't be actually instanitating the services, controllers or classes
+  spring boot will see the relevant annotations and instantiate the necessary beans and inject
+* Configuration properties annotations
+  * infrastructure to express opinions about your applications - this allows you to create custom application.properties
+  * To do that all you can do is annotate with `@ConfigurationProperties("github")`
+  * You'll need to then enable configuration via your entry point as well `EnableConfigurationProperties(GithubProperties.class)`
+  * Install `spring-boot-configuration-processor` in pom.xml so that you get nice autocomplete in the properties file
+  * The target/classes/META-INF/spring-configuration-metadata.json will reflect any changes you make
+  * You can validate your config by setting Pattern rules as well using @Pattern to the config and @Validated
+
+```java
+@ConfigurationProperties("github")
+@Validated
+public class GithubProperties   {
+    /**
+     * Github API token ("user:sampletoken")
+     */
+    @Pattern(regexp = "\\w+:\\w+")
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+}
+```
+  
