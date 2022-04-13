@@ -142,4 +142,9 @@ public class GithubProperties   {
     }
 }
 ```
+
+* Intercepters
+  * Everytime we send a request to the github api - we want to send say an auth token along with the request
+  * In this case its to make sure the rate limiting from github doesnt apply
+  * We can modify the headers at run time of a http request - and then execute it again with the injection
   
