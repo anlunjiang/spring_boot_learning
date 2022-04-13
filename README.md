@@ -147,4 +147,12 @@ public class GithubProperties   {
   * Everytime we send a request to the github api - we want to send say an auth token along with the request
   * In this case its to make sure the rate limiting from github doesnt apply
   * We can modify the headers at run time of a http request - and then execute it again with the injection
+* Actuators
+  * Give some useful insight into your spring boot application
+  * by default after you compile the dependency in - you will have a new endpoint: `/actuator/health`
+    * You can expose more endpoints by going to your `application.properties` file and settings `management.endpoints.web.exposure.include=*`
+    * However, be careful as that might be a security issue - default only the health is exposed
+  * `actuator/conditions` endpoint essentially tells you all the config that spring boot has done and why
+  * `actuator/env` tells you more about your application config - e.g. your token will be here 
+  * `management.endpoint.health.show-details=always` to have a more verbose HC - e.g. db healthchecks etc
   
