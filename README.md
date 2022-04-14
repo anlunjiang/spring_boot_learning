@@ -112,6 +112,18 @@ For CSS and JS aesthetic looks - you can install many different depedencies that
 </dependencies>
 ```
 
+## spring-boot-starter-security
+
+If you want security when it comes to spring boot applications - you can install the following dependency
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+This by default will lock your endpoints with an auto-generators pwd - defualt username is `user`
 ## Spring Framework
 
 Spring has a multitude of helpers that enable you to develop in an opininated framework
