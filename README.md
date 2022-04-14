@@ -187,4 +187,11 @@ public class GithubProperties   {
   * `actuator/conditions` endpoint essentially tells you all the config that spring boot has done and why
   * `actuator/env` tells you more about your application config - e.g. your token will be here 
   * `management.endpoint.health.show-details=always` to have a more verbose HC - e.g. db healthchecks etc
-  
+* Metrics
+  * Within the Actuators endpoint - you can expose metrics which can show you different information about your app
+  * you can create your custom ones as well using `micrometer.meterregistry`
+    * This creates a new attr for metrics endpoint that fits your logic
+* HTML Templates
+  * Error Templates
+    * Spring looks for specific HTML error templates for different status codes for api endpoints
+    * it will by default always look under `templates/error/4xx.html` for all 400 messages

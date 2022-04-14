@@ -1,6 +1,7 @@
 package com.aj2814.springLearning.github;
 
 import com.aj2814.springLearning.GithubProperties;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -18,16 +19,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class GithubClient {
     private static final String EVENT_ISSUES_URL = "https://api.github.com/repos/{owner}/{repo}/issues/events";
     private final RestTemplate restTemplate;
 
-    public GithubClient(RestTemplateBuilder builder, GithubProperties properties) {
-
+    public GithubClient(RestTemplateBuilder builder, GithubProperties properties, MeterRegistry registry) {
         this.restTemplate = builder
                 .additionalInterceptors(new GithubAppTokenInterceptor(properties.getToken()))
+                .additionalInterceptors(new MetricsIntercepter(registry))
                 .build();
     }
 
@@ -39,6 +41,7 @@ public class GithubClient {
     public List<RepositoryEvent> fetchEventsList(String orgName, String repoName) {
         return Arrays.asList(fetchEvents(orgName, repoName).getBody());
     }
+
     private static class GithubAppTokenInterceptor implements ClientHttpRequestInterceptor {
         private final String token;
 
@@ -53,6 +56,22 @@ public class GithubClient {
                 httpRequest.getHeaders().set(HttpHeaders.AUTHORIZATION, "Basic " + Base64Utils.encodeToString(basicAuthValue));
             }
             return clientHttpRequestExecution.execute(httpRequest, bytes);
+        }
+    }
+
+    private static class MetricsIntercepter implements ClientHttpRequestInterceptor {
+        private final AtomicInteger gauge;
+
+        MetricsIntercepter(MeterRegistry meterRegistry) {
+            this.gauge = meterRegistry.gauge("github.ratelimit.remaining", new AtomicInteger(60));
+        }
+
+        @Override
+        public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes,
+                ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
+            ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest, bytes);
+            this.gauge.set(Integer.parseInt(response.getHeaders().getFirst("X-RateLimit-Remaining")));
+            return response;
         }
     }
 }
