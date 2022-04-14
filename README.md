@@ -6,6 +6,9 @@ Once done it will prompt to download a zip file with your initialised project - 
 
 * start.spring.io - spring initialiser
 
+To list processes listening on a particular port:
+`lsof -i:8080`
+
 ## Packages
 
 Spring framework has a multitude of packages that you can include in your framework. Many of which will change the 
@@ -79,6 +82,35 @@ It will also track your versions via a table `flyway_schema_history`
 |----------------|---------|-------|------------------|-----------|--------------|---------------------------|----------------|---------|
 | -1             | null    | TABLE |                  | null      | SA           | 2022-04-12 02:37:11.669   | 0              | TRUE    |
 | 1              | 1.0.0   | SQL   | V1.0.0__init.sql | 119191856 | SA           | 2022-04-12 02:37:11.699   | 9              | TRUE    |
+
+### webjars
+
+For CSS and JS aesthetic looks - you can install many different depedencies that spring boot will pick up and apply to your frontend. E.g. 
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+  </dependency>
+
+  <dependency>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>bulma</artifactId>
+    <version>0.9.3</version>
+  </dependency>
+  <dependency>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>font-awesome</artifactId>
+    <version>4.7.0</version>
+  </dependency>
+  <dependency>
+    <groupId>org.webjars.bower</groupId>
+    <artifactId>timeago.js</artifactId>
+    <version>4.0.2</version>
+  </dependency>
+</dependencies>
+```
 
 ## Spring Framework
 
