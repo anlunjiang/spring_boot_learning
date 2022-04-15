@@ -3,6 +3,7 @@ package com.aj2814.springLearning.github;
 import com.aj2814.springLearning.GithubProperties;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ public class GithubClient {
         // the uri variables are fit into the events issues url
     }
 
+    @Cacheable("events")
     public List<RepositoryEvent> fetchEventsList(String orgName, String repoName) {
         return Arrays.asList(fetchEvents(orgName, repoName).getBody());
     }

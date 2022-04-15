@@ -83,6 +83,29 @@ It will also track your versions via a table `flyway_schema_history`
 | -1             | null    | TABLE |                  | null      | SA           | 2022-04-12 02:37:11.669   | 0              | TRUE    |
 | 1              | 1.0.0   | SQL   | V1.0.0__init.sql | 119191856 | SA           | 2022-04-12 02:37:11.699   | 9              | TRUE    |
 
+### caffeine and spring-boot-starter-cache
+
+Since our API is rate limited - it's a good idea to implement a cache. These two dependencies will annotate a cacheable
+to the method we want - and so refreshing won't count towards our rate limit
+You annotate your method with 
+`@Cacheable("events")`- So that spring knows to tag this method with events and will cache the return if the configured:
+
+You can update your applications.properties:
+`spring.cache.cache-names=events`  
+`spring.cache.caffeine.spec=expireAfterWrite=120s`  
+
+This cache lasts 2 minutes
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+</dependency>
+```
 ### webjars
 
 For CSS and JS aesthetic looks - you can install many different depedencies that spring boot will pick up and apply to your frontend. E.g. 
